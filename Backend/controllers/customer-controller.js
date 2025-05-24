@@ -3,7 +3,8 @@ const Customer = require("../models/customer-model");
 const random = require('random');
 const sendEmail = require("../services/mail-service");
 const jwt = require("jsonwebtoken");
-
+const { tokenBlacklist } = require("../middlewares/auth-middleware");
+const sendResponse = require("../utils/response-handler");
 
 
 const addCustomer = async (req, res) => {
@@ -11,7 +12,7 @@ const addCustomer = async (req, res) => {
         const { name, email, mobile_number } = req.body;
         const customerExist = await Customer.findOne({ email });
         if (customerExist) {
-            res.status(400).json({ msg: "Email Already Exist" });
+            return sendResponse(res, 400, {}, "Email Already Exist");
         }
         const password = Math.floor(100000 + Math.random() * 900000);
         const customer = await Customer.create({ name, email, mobile_number, password });
@@ -37,14 +38,14 @@ const addCustomer = async (req, res) => {
             html
         });
 
-        return res.status(200).json({
-            msg: customer,
+        return sendResponse(res, 200, {
+            customer : customer,
             token: await customer.generateToken(),
             customerId: customer._id.toString()
-        });
+        },"Registered Successfully");
     }
     catch (e) {
-        return res.status(400).json({ msg: `addCustomer Controller error ${e}` });
+        return sendResponse(res, 400, {}, `addCustomer Controller error ${e}` )
     }
 };
 
@@ -53,31 +54,30 @@ const login = async (req, res) => {
         const { email, password } = req.body;
         const emailExist = await Customer.findOne({ email });
         if (!emailExist) {
-            return res.status(400).json({ msg: "Invalid Credentials" });
+            return sendResponse(res, 400, {}, "Invalid Credentials");
         }
         const isMatch = await emailExist.comparePassword(password);
         if (!isMatch) {
-            return res.status(400).json({ msg: "Invalid Credentials" });
+            return sendResponse(res, 400, {}, "Invalid Credentials");
         }
-        return res.status(200).json({
-            msg: "Login Successfully",
+        return sendResponse(res, 200, {
             token: await emailExist.generateToken(),
             customerId: emailExist._id.toString(),
-        })
+        },"Login Successfully");
     } catch (error) {
-        return res.status(400).json({ msg: `login Controller error ${e}` });
+        return sendResponse(res, 400, {}, `login Controller error ${error}` );
     }
 }
 
 const getAllCustomer = async (req, res) => {
     try {
         const customers = await Customer.find({}, { password: 0, is_admin: 0, __v: 0 });
-        if (!customers) {
-            return res.status(200).json({ msg: "Customers not found" });
+        if (customers.length === 0) {
+            return sendResponse(res, 200, {}, "Customers not found");
         }
-        return res.status(200).json({ msg: customers });
-    } catch (error) {
-        return res.status(400).json({ msg: `getAllCustomer Controller error ${e}` });
+        return sendResponse(res, 200, {customers}, "Customers fetched");
+    } catch (e) {
+        return sendResponse(res, 400, {}, `getAllCustomer Controller error ${e}`);
     }
 }
 
@@ -104,17 +104,17 @@ const deleteCustomer = async (req, res) => {
         const id = req.query.id;
 
         if (!id) {
-            return res.status(400).json({ msg: "Customer ID is required" });
+            return sendResponse(res, 400, {}, "Customer ID is required");
         }
 
         const customerExist = await Customer.findOne({ _id: id });
         if (!customerExist) {
-            return res.status(400).json({ msg: `given customer ID is not found` });
+            return sendResponse(res, 400, {}, "given customer ID is not found");
         }
         await Customer.deleteOne({ _id: id });
-        return res.status(200).json({ msg: `Deleted Successfully` });
-    } catch (error) {
-        return res.status(400).json({ msg: `deleteCustomerById Controller error ${e}` });
+        return sendResponse(res, 200, {}, "Deleted Successfully");
+    } catch (e) {
+        return sendResponse(res, 400, {}, `deleteCustomerById Controller error ${e}`);
     }
 }
 
@@ -127,9 +127,8 @@ const updateCustomer = async (req, res) => {
         console.log("With data:", updateData);
 
         if (!id) {
-            return res.status(400).json({ msg: "Customer ID is required" });
+            return sendResponse(res, 400, {}, "Customer ID is required" );
         }
-
         // Try to update
         const customer = await Customer.findByIdAndUpdate(
             id,
@@ -138,13 +137,11 @@ const updateCustomer = async (req, res) => {
         );
 
         if (!customer) {
-            return res.status(404).json({ msg: "Customer not found" });
+            return sendResponse(res, 400, {}, "Customer not found");
         }
-
-        res.status(200).json({ msg: "Customer updated successfully", customer });
-    } catch (error) {
-        console.error("Update error:", error);
-        return res.status(400).json({ msg: `updateCustomer Controller error ${error.message}` });
+        return sendResponse(res, 200, {updatedCustomer: customer}, "Customer updated successfully");
+    } catch (e) {
+        return sendResponse(res, 400, {}, `updateCustomer Controller error ${e}`);
     }
 };
 
@@ -152,41 +149,41 @@ const updatePassword = async (req, res) => {
     try {
         const id = req.query.id;
         if (!id) {
-            return res.status(400).json({ msg: "Customer ID is required" });
+            return sendResponse(res, 400, {}, "Customer ID is required");
         }
         const { currentPassword, newPassword } = req.body;
         if (!currentPassword) {
-            return res.status(400).json({ msg: "Please enter current Password" });
+            return sendResponse(res, 400, {}, "Please enter current Password");
         }
 
         const customer = await Customer.findOne({ _id: id });
         if (!customer) {
-            return res.status(404).json({ msg: "Customer not found" });
+            return sendResponse(res, 400, {}, "Customer not found");
         }
 
         const isMatch = await customer.comparePassword(currentPassword);
         if (!isMatch) {
-            return res.status(401).json({ msg: "Current password is incorrect" });
+            return sendResponse(res, 400, {}, "Current password is incorrect");
         }
         if (!newPassword) {
-            return res.status(400).json({ msg: "Please enter new Password" });
+            return sendResponse(res, 400, {}, "Please enter new Password");
         }
         customer.password = newPassword;
         await customer.save();
-        return res.status(200).json({ msg: "Password updated successfully" });
-    } catch (error) {
-        return res.status(400).json({ msg: `updatePassword Controller error ${error.message}` });
+        return sendResponse(res, 200, {}, "Password updated successfully");
+    } catch (e) {
+        return sendResponse(res, 400, {}, `updatePassword Controller error ${e}`);
     }
 }
 
 const requestForForgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
-        const customer = await Customer.findOne({ email });
-        if (!customer) return res.status(404).json({ message: "Customer doesn't exist" });
+        const customer = await Customer.findOne({ email });       
+        if (!customer) return sendResponse(res, 400, {}, "Customer doesn't exist");
 
-        const token = await customer.generateResetToken();;
-        const resetURL = `https://localhost:5000/customer/forgot-password?id=${customer._id}&token=${token}`;
+        const token = await customer.generateResetToken();
+        const resetURL = `${process.env.URL}/customer/forgot-password?id=${customer._id}&token=${token}`;
 
         const html = `
             <!DOCTYPE html>
@@ -227,38 +224,49 @@ const requestForForgotPassword = async (req, res) => {
             </body>
             </html>
             `
-
         await sendEmail({
             to: email,
             subject: 'Forgot Password',
             html
         });
-        
-        res.status(200).json({ message: 'Password reset link sent' });
-    } catch (error) {
-        return res.status(400).json({ msg: `requestForForgotPassword Controller error ${error.message}` });
+        return sendResponse(res, 200, {}, "Password reset link sent");
+    } catch (e) {
+        return sendResponse(res, 400, {}, `requestForForgotPassword Controller error ${e}`);
     }
 }
 
-const forgotPassword = async (req,res) => {
+const forgotPassword = async (req, res) => {
     try {
         const { id, token } = req.query;
         const { password } = req.body;
         const customer = await Customer.findOne({ _id: id });
         if (!customer) {
-            return res.status(400).json({ message: "Customer not exists!" });
+            return sendResponse(res, 400, {}, "Customer not exists!");
         }
         const secret = process.env.JWT_SECRET_KEY + customer.password;
         jwt.verify(token, secret);
 
         customer.password = password;
         await customer.save();
-
-        res.status(200).json({ message: "Password has been reset successfully." });
-    } catch (error) {
-        res.status(400).json({ msg: `forgotPassword Controller error ${error.message}` });
+        return sendResponse(res, 200, {}, "Password has been reset successfully.");
+    } catch (e) {
+        return sendResponse(res, 400, {}, `forgotPassword Controller error ${e}`);
     }
 }
 
+const logout = async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return sendResponse(res, 400, {}, "No token provided");
+        }
 
-module.exports = { addCustomer, login, getAllCustomer, getCustomerById, deleteCustomer, updateCustomer, updatePassword, requestForForgotPassword, forgotPassword };
+        const token = authHeader.split(" ")[1];
+        tokenBlacklist.add(token); // add token to blacklist
+        return sendResponse(res, 200, {}, "logout succesfully");
+    } catch (e) {
+        return sendResponse(res, 400, {}, `logout Controller error ${e}`);
+    }
+}
+
+module.exports = { addCustomer, login, getAllCustomer, getCustomerById, deleteCustomer, updateCustomer, updatePassword, requestForForgotPassword, forgotPassword, logout };
