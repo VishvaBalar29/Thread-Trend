@@ -129,10 +129,24 @@ const updateCustomer = async (req, res) => {
         if (!id) {
             return sendResponse(res, 400, {}, "Customer ID is required" );
         }
-        // Try to update
+
+        
+        if(id != req.user.customerId){
+            return sendResponse(res, 403, {}, "You are not authorized to update this customer");
+        }
+
+        const allowedFields = ["name", "email", "mobile_number"];
+        const invalidFields = Object.keys(req.body).filter(
+            field => !allowedFields.includes(field)
+        );
+
+        if (invalidFields.length > 0) {
+            return sendResponse(res, 400, {}, `Cannot update: ${invalidFields.join(", ")}`);
+        }
+
         const customer = await Customer.findByIdAndUpdate(
             id,
-            updateData,
+            req.body,
             { new: true, runValidators: true, select: '-password' }
         );
 
@@ -150,6 +164,9 @@ const updatePassword = async (req, res) => {
         const id = req.query.id;
         if (!id) {
             return sendResponse(res, 400, {}, "Customer ID is required");
+        }
+        if(id != req.user.customerId){
+            return sendResponse(res, 403, {}, "You are not authorized to update this customer");
         }
         const { currentPassword, newPassword } = req.body;
         if (!currentPassword) {
