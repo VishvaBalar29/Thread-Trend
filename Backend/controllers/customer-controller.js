@@ -286,4 +286,14 @@ const logout = async (req, res) => {
     }
 }
 
-module.exports = { addCustomer, login, getAllCustomer, getCustomerById, deleteCustomer, updateCustomer, updatePassword, requestForForgotPassword, forgotPassword, logout };
+const user = async (req,res) => {
+    try {   
+        const customerData = req.user;
+        console.log(customerData);
+        return sendResponse(res, 200, {userData : customerData}, "Customer Fetched");       
+    } catch (e) {
+        return sendResponse(res, 400, {}, `error from the uesr route ${e}`);
+    }
+}
+
+module.exports = { addCustomer, login, getAllCustomer, getCustomerById, deleteCustomer, updateCustomer, updatePassword, requestForForgotPassword, forgotPassword, logout, user };

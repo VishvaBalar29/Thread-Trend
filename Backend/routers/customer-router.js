@@ -27,4 +27,6 @@ router.route("/forgot-password").post(authMiddleware, customerController.forgotP
 
 router.route("/logout").post(checkLogout, customerController.logout);
 
+router.route("/user").get(authMiddleware, customerController.user);
+
 module.exports = router;

@@ -1,22 +1,19 @@
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
+import logo from "../assets/images/logo1.png";
 
 export const Navbar = () => {
     return (
         <>
-            <nav>
-                <input type="checkbox" id="check" />
-                <label for="check" class="checkbtn">
-                    <i class="fas fa-bars"></i>
-                </label>
-                <label class="logo">GFG</label>
-                <ul>
-                    <li><a class="active" href="#">HTML</a></li>
-                    <li><a href="#">Javascript</a></li>
-                    <li><a href="#">ReactJS</a></li>
-                    <li><a href="#">NodeJS</a></li>
-                </ul>
-            </nav>
+        <nav className="navbar">
+            <img src={logo} alt="Logo" className="logo" height="38px" width="160px"/>
+            <ul className="nav-links">
+                <li><NavLink to="/">Home</NavLink></li>
+                <li><NavLink to="/addCustomer">Add</NavLink></li>
+                <li><NavLink to="/login">Login</NavLink></li>
+                <li><NavLink to="/customers">Customers</NavLink></li>
+            </ul>
+        </nav>
         </>
-    )
+    );
 }
