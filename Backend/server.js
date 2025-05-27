@@ -9,10 +9,11 @@ const cors = require('cors');
 
 // handling data from frontend
 const corsOptions = {
-    origin : "http://localhost:5173",
-    method : "GET, POST, PUT, DELETE, PATCH, HEAD",
-    credentials : true
-}
+    origin: "http://localhost:5173",
+    methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
+    credentials: true,
+};
+
 app.use(cors(corsOptions));
 
 

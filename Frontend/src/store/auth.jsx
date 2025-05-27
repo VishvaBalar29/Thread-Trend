@@ -20,7 +20,9 @@ export const AuthProvider = ({ children }) => {
     }
 
     const fetchAuthenticatedUser = async () => {
-        try {
+        try {   
+            console.log("token from frontend : ", token);
+            
             const response = await fetch(`http://localhost:5000/customer/user`, {
                 method : "GET",
                 headers : {

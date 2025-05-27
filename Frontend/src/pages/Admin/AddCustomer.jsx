@@ -1,4 +1,4 @@
-import "../assets/css/form.css";
+import "../../assets/css/AddCustomer.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
@@ -21,6 +21,7 @@ export const AddCustomer = () => {
   };
 
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +29,8 @@ export const AddCustomer = () => {
         const response = await fetch(`http://localhost:5000/customer/add`, {
             method : 'POST',
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body : JSON.stringify(formData)
         });
@@ -41,7 +43,7 @@ export const AddCustomer = () => {
               email : "",
               mobile_number : ""
             });
-            navigate("/login");
+            navigate("/customers");
         }
         else{
             console.log(res_data);
@@ -85,3 +87,6 @@ export const AddCustomer = () => {
     </div>
   );
 };
+
+
+

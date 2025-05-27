@@ -1,0 +1,51 @@
+@import url("./variable.css");
+.sidebar {
+  position: fixed;
+  top: 60px; 
+  left: 0;
+  width: 250px;
+  height: calc(100vh - 60px); 
+  background-color: rgb(76 69 214);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  font-size: 22px;
+  color: var(--text-color);
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-menu li {
+  margin-bottom: 15px;
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-menu li a i {
+  margin-right: 12px;
+  font-size: 16px;
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li a.active {
+  background-color: rgb(103, 96, 228);
+  color: #ffffff;
+  
+}

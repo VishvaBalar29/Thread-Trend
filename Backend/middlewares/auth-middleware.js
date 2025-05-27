@@ -6,13 +6,16 @@ const tokenBlacklist = new Set();
 // Middleware to check if user is logged in
 const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
+    console.log("headers : ", req.headers.authorization);
+    
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return sendResponse(res, 400, {}, "No token provided....you need to login first");
+        return sendResponse(res, 400, {}, "aNo token provided....you need to login first");
     }
 
     const token = authHeader.split(" ")[1];
     console.log("Extracted token:", token);
+
 
     if (!token || token === "{{authToken}}"){
         return sendResponse(res, 400, {}, "No token provided....you need to login first");
