@@ -42,7 +42,7 @@ export const AdminPanel = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/admin/view-category" onClick={closeSidebar}>
+            <NavLink to="/admin/view-categories" onClick={closeSidebar}>
               <i className="fas fa-folder-open"></i> View Category
             </NavLink>
           </li>

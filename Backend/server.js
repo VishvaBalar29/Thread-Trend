@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const customerRouter = require("./routers/customer-router");
+const categoryRouter = require("./routers/category-router");
+const designRouter = require("./routers/design-router");
 const connectDb = require("./utils/db");
 const errorMiddleware = require("./middlewares/error-middleware")
 const cors = require('cors');
@@ -23,6 +25,8 @@ app.use(express.json());
 
 // routers
 app.use("/customer", customerRouter);
+app.use("/category", categoryRouter);
+app.use("/design", designRouter);
 
 
 // for error-middleware

@@ -13,7 +13,7 @@ const addCustomer = async (req, res) => {
 
         const customerExist = await Customer.findOne({ email });
         if (customerExist) {
-            return sendResponse(res, 400, {}, "123 - Email Already Exist");
+            return sendResponse(res, 400, {}, "Email Already Exist");
         }
         const password = Math.floor(100000 + Math.random() * 900000);
         const customer = await Customer.create({ name, email, mobile_number, password });
@@ -103,11 +103,9 @@ const getCustomerById = async (req, res) => {
 const deleteCustomer = async (req, res) => {
     try {
         const id = req.query.id;
-
         if (!id) {
             return sendResponse(res, 400, {}, "Customer ID is required");
         }
-
         const customerExist = await Customer.findOne({ _id: id });
         if (!customerExist) {
             return sendResponse(res, 400, {}, "given customer ID is not found");
