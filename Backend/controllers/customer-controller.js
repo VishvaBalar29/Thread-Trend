@@ -10,9 +10,10 @@ const sendResponse = require("../utils/response-handler");
 const addCustomer = async (req, res) => {
     try {
         const { name, email, mobile_number } = req.body;
+
         const customerExist = await Customer.findOne({ email });
         if (customerExist) {
-            return sendResponse(res, 400, {}, "Email Already Exist");
+            return sendResponse(res, 400, {}, "123 - Email Already Exist");
         }
         const password = Math.floor(100000 + Math.random() * 900000);
         const customer = await Customer.create({ name, email, mobile_number, password });
@@ -131,7 +132,7 @@ const updateCustomer = async (req, res) => {
         }
 
         
-        if(id != req.user.customerId){
+        if(id != req.user.customerId && !req.user.is_admin){
             return sendResponse(res, 403, {}, "You are not authorized to update this customer");
         }
 

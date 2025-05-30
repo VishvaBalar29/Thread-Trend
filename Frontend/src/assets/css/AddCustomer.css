@@ -1,4 +1,5 @@
 @import url("./variable.css");
+
 * {
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
@@ -10,19 +11,26 @@ body {
 }
 
 .form-wrapper {
-  max-width: 430px; 
+  max-width: 430px;
+  margin: 40px auto;
   padding: 30px;
-  /* background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.1); */
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
-
 
 .form-wrapper h2 {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   font-weight: 600;
   color: var(--text-color);
+}
+
+.form-wrapper p {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #555;
+  font-size: 14px;
 }
 
 .customer-form {
@@ -60,25 +68,6 @@ body {
 .customer-form button:hover {
   background-color: var(--text-color);
 }
-
-.forgot-password {
-  text-align: center;
-  margin-top: 12px;
-}
-
-.forgot-password a {
-  font-size: 14px;
-  color: var(--secondary-color);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.forgot-password a:hover {
-  color: var(--text-color);
-  text-decoration: underline;
-}
-
-
 
 /* Responsive for smaller screens */
 @media (max-width: 480px) {

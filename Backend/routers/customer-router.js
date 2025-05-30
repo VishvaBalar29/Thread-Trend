@@ -17,13 +17,13 @@ router.route("/get-customer").get(authMiddleware, authorizeAdmin, customerContro
 
 router.route("/delete").delete(authMiddleware, authorizeAdmin, customerController.deleteCustomer);
 
-router.route("/update").patch(authMiddleware, customerController.updateCustomer);
+router.route("/update").patch(authMiddleware,validateMiddleware(registerSchema), customerController.updateCustomer);
 
 router.route("/update-password").patch(authMiddleware, customerController.updatePassword);
 
-router.route("/request-forgot-password").post(authMiddleware, customerController.requestForForgotPassword);
+router.route("/request-forgot-password").post(customerController.requestForForgotPassword);
 
-router.route("/forgot-password").post(authMiddleware, customerController.forgotPassword);
+router.route("/forgot-password").post(customerController.forgotPassword);
 
 router.route("/logout").post(checkLogout, customerController.logout);
 

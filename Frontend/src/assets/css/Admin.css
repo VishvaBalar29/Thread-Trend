@@ -12,3 +12,12 @@
   width: calc(100vw - 250px);  
   box-sizing: border-box;
 }
+
+/* On small screens, remove sidebar margin and add padding */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    width: 100vw;
+    padding: 20px;
+  }
+}

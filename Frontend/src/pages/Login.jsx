@@ -1,11 +1,24 @@
 import "../assets/css/Login.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
-import { Link } from "react-router-dom"; // Optional, only if you're using React Router
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const Login = () => {
+  const { storeTokenInLs, token } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      toast.error("You're already Logged In", { theme: "dark" });
+    }
+  }, [token]);
+
+  if (token) {
+    return <Navigate to="/" replace />;
+  }
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,39 +31,30 @@ export const Login = () => {
     }));
   };
 
-  const navigate = useNavigate();
-  const { storeTokenInLs } = useAuth();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/customer/login`, {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/customer/login", {
+        method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
-      })
+        body: JSON.stringify(formData),
+      });
 
       const res_data = await response.json();
-      console.log(res_data);
-      
+
       if (response.ok) {
         toast.success(res_data.msg, { theme: "dark" });
         storeTokenInLs(res_data.data.token);
-        setFormData({
-          email: "",
-          password: ""
-        });
+        setFormData({ email: "", password: "" });
         navigate("/");
-      }
-      else {
-        toast.error(res_data.msg, { theme: dark });
+      } else {
+        toast.error(res_data.msg, { theme: "dark" });
       }
     } catch (error) {
-      console.log("Login : ", error);
+      console.error("Login Error:", error);
     }
-
   };
 
   return (
@@ -73,12 +77,9 @@ export const Login = () => {
           onChange={handleChange}
           required
         />
-
         <button type="submit">Login</button>
-
-        {/* Forgot Password Link below the button */}
         <div className="forgot-password">
-          <Link to="/forgot-password">Forgot Password?</Link>
+          <Link to="/request-forgot-password">Forgot Password?</Link>
         </div>
       </form>
     </div>

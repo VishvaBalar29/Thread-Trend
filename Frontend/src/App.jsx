@@ -8,6 +8,12 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { AddCustomer} from "./pages/Admin/AddCustomer";
 import { ViewCustomers } from "./pages/Admin/ViewCustomers";
 import { AddDesign } from "./pages/Admin/AddDesign";
+import { Logout } from "./pages/Logout";
+import { About } from "./pages/About";
+import { Design } from "./pages/Design";
+import { RequestForgotPassword } from "./pages/RequestForgotPassword";
+import { ForgotPassword } from "./pages/ForgotPassword";
+import { Profile } from "./pages/Profile";
 
 
 const App = () => {
@@ -18,7 +24,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          {/* <Route path="/customers" element={<Customers />}></Route> */}
+          <Route path="/logout" element={<Logout />}></Route>
+          <Route path="/about" element={<About />}></Route>
+          <Route path="/design" element={<Design />}></Route>
+          <Route path="/request-forgot-password" element={<RequestForgotPassword />}></Route>
+          <Route path="/customer/forgot-password" element={<ForgotPassword />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
           <Route path="/admin" element={<Admin />}>
             <Route index element={<h1>Hello Admin Page</h1>} />
             <Route path="add-customer" element={<AddCustomer />} />
