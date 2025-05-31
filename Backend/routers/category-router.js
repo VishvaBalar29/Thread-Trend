@@ -11,4 +11,6 @@ router.route("/delete").delete(authMiddleware, authorizeAdmin, categoryControlle
 
 router.route("/update").patch(authMiddleware, authorizeAdmin, categoryController.updateCategory);
 
+router.route("/getByName").get(authMiddleware, authorizeAdmin, categoryController.getCategoryByName);
+
 module.exports = router;

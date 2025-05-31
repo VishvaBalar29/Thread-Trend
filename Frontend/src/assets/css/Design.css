@@ -1,0 +1,183 @@
+@import url("./variable.css");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--primary-color2);
+  color: var(--text-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filters input[type="search"] {
+  flex: 1 1 300px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1.5px solid var(--secondary-color);
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+  color: var(--text-color);
+  background: var(--primary-color);
+}
+
+.filters input[type="search"]:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px var(--secondary-color);
+}
+
+.filters select {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1.5px solid var(--secondary-color);
+  border-radius: 6px;
+  background: var(--primary-color);
+  cursor: pointer;
+  min-width: 150px;
+  color: var(--text-color);
+  transition: border-color 0.2s ease;
+}
+
+.filters select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px var(--secondary-color);
+}
+
+.cards {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scrollbar-width: none; /* Firefox */
+}
+.cards::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: 0 0 calc((100% - 3 * 1.5rem) / 4); 
+  background: var(--primary-color);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgb(0 0 0 / 0.15);
+}
+
+.card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
+  padding: 1rem 1.25rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-color);
+}
+
+.card-category {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card-description {
+  font-weight: 300;
+  font-size: 1rem;
+  color: #475569;
+  flex-grow: 1;
+}
+
+.pagination {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+  min-width: 32px;
+  text-align: center;
+}
+
+.page-btn:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.page-btn.active {
+  background: #4c45d6cc; /* lighter secondary with transparency */
+}
+
+@media (max-width: 900px) {
+  .card {
+    flex: 0 0 calc((100% - 2 * 1.5rem) / 3); /* 3 cards */
+  }
+}
+
+@media (max-width: 600px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters input[type="search"],
+  .filters select {
+    width: 100%;
+    padding : 0
+  }
+
+
+  .card {
+    flex: 0 0 100%; /* 1 card per row on small screens */
+  }
+}

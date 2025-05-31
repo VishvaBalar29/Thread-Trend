@@ -229,6 +229,56 @@ button.history-btn:hover {
     background-color: #aaa;
 }
 
+.form-wrapper {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.customer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.customer-form input,
+.customer-form select,
+.customer-form textarea {
+    padding: 10px 12px;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.customer-form input:focus,
+.customer-form select:focus,
+.customer-form textarea:focus {
+    border-color: var(--secondary-color);
+}
+
+.customer-form button {
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.customer-form button:hover {
+    background-color: #5a52db;
+}
+
+
 /* Responsive */
 @media (max-width: 920px) {
     .container {

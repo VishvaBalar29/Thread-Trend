@@ -23,6 +23,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 
+// for stores images
+app.use("/uploads", express.static("uploads"));
+
+
 // routers
 app.use("/customer", customerRouter);
 app.use("/category", categoryRouter);

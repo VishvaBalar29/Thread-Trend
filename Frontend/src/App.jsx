@@ -16,6 +16,7 @@ import { ForgotPassword } from "./pages/ForgotPassword";
 import { Profile } from "./pages/Profile";
 import { AddCategory } from "./pages/Admin/AddCategory";
 import { ViewCategories } from "./pages/Admin/ViewCategories";
+import { ViewDesigns } from "./pages/Admin/ViewDesigns";
 
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="add-customer" element={<AddCustomer />} />
             <Route path="view-customers" element={<ViewCustomers />} />
             <Route path="add-design" element={<AddDesign />} />
+            <Route path="view-designs" element={<ViewDesigns />} />
             <Route path="add-category" element={<AddCategory />} />
             <Route path="view-categories" element={<ViewCategories />} />
           </Route>
