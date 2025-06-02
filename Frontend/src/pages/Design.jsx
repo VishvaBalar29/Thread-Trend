@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/Design.css";
+import { Link } from "react-router-dom";
+
+
 
 export const Design = () => {
   const [designs, setDesigns] = useState([]);
@@ -20,10 +23,7 @@ export const Design = () => {
   async function fetchDesigns() {
     try {
       const res = await fetch("http://localhost:5000/design/get",{
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          method: "GET"
         });
       const json = await res.json();
       console.log(json);
@@ -114,8 +114,9 @@ export const Design = () => {
         </div>
 
         <div className="cards" aria-live="polite">
-          {paginatedDesigns.length > 0 ? (
+          {paginatedDesigns.length > 0 ? (          
             paginatedDesigns.map(({ _id, image, title, category_id, description }) => (
+              <Link to={`/design/${_id}`} key={_id} style={{ textDecoration: 'none', color: 'inherit' }}>
               <article key={_id} className="card" tabIndex={0} aria-label={`${title} design card`}>
                 <img
                   src={`http://localhost:5000/uploads/designs/${image}`}
@@ -129,7 +130,7 @@ export const Design = () => {
                   <div className="card-category">{category_id?.name || "No Category"}</div>
                 </div>
               </article>
-              
+              </Link>
             ))
           ) : (
             <p>No designs found matching your criteria.</p>

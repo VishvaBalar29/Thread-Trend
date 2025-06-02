@@ -1,0 +1,28 @@
+
+.form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.3s ease;
+  outline: none;
+  cursor: pointer;
+}
+
+.form-group select:focus {
+  border-color: #007bff; 
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+.form-group select::-ms-expand {
+  display: none; 
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}

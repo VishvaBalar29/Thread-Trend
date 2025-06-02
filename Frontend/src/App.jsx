@@ -17,6 +17,7 @@ import { Profile } from "./pages/Profile";
 import { AddCategory } from "./pages/Admin/AddCategory";
 import { ViewCategories } from "./pages/Admin/ViewCategories";
 import { ViewDesigns } from "./pages/Admin/ViewDesigns";
+import { DesignDetails } from "./pages/DesignDetails";
 
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/logout" element={<Logout />}></Route>
           <Route path="/about" element={<About />}></Route>
           <Route path="/design" element={<Design />}></Route>
+          <Route path="/design/:id" element={<DesignDetails />} />
           <Route path="/request-forgot-password" element={<RequestForgotPassword />}></Route>
           <Route path="/customer/forgot-password" element={<ForgotPassword />}></Route>
           <Route path="/profile" element={<Profile />}></Route>

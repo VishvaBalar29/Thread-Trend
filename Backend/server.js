@@ -4,6 +4,8 @@ const app = express();
 const customerRouter = require("./routers/customer-router");
 const categoryRouter = require("./routers/category-router");
 const designRouter = require("./routers/design-router");
+const orderRouter = require("./routers/order-router");
+const itemRouter = require("./routers/item-router");
 const connectDb = require("./utils/db");
 const errorMiddleware = require("./middlewares/error-middleware")
 const cors = require('cors');
@@ -31,6 +33,8 @@ app.use("/uploads", express.static("uploads"));
 app.use("/customer", customerRouter);
 app.use("/category", categoryRouter);
 app.use("/design", designRouter);
+app.use("/order", orderRouter);
+app.use("/item", itemRouter);
 
 
 // for error-middleware

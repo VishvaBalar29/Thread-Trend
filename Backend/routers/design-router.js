@@ -6,12 +6,12 @@ const upload = require("../middlewares/upload")
 
 router.route("/add").post(authMiddleware, authorizeAdmin, upload.single("image"), designController.add);
 
-router.route("/get").get(authMiddleware, designController.getDesigns);
+router.route("/get").get(designController.getDesigns);
 
 router.route("/delete").delete(authMiddleware, authorizeAdmin, designController.deleteDesign);
 
 router.route("/update").patch(authMiddleware, authorizeAdmin, upload.single("image"), designController.updateDesign);
 
-router.route("/get").get(authMiddleware, designController.getDesignById);
+router.route("/get/:id").get(designController.getDesignById);
 
 module.exports = router;

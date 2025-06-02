@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 export const ViewDesigns = () => {
     const [designs, setDesigns] = useState([]);
+    const [categories, setCategories] = useState([]);  // <-- add categories state
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
     const [showModal, setShowModal] = useState(false);
@@ -14,11 +15,11 @@ export const ViewDesigns = () => {
     const recordsPerPage = 6;
     const token = localStorage.getItem("token");
 
+    // Fetch all designs
     const getDesigns = async () => {
         try {
             const response = await fetch(`http://localhost:5000/design/get`, {
-                method: 'GET',
-                headers: { "Authorization": `Bearer ${token}` },
+                method: 'GET'
             });
             const res_data = await response.json();
             if (response.ok) setDesigns(res_data.data.designs);
@@ -28,7 +29,25 @@ export const ViewDesigns = () => {
         }
     };
 
-    useEffect(() => { getDesigns(); }, []);
+    // Fetch categories once on mount
+    const getCategories = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/category/get`, {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            const res_data = await response.json();
+            if (response.ok) setCategories(res_data.data.categories);
+            else console.log("Error fetching categories:", res_data);
+        } catch (e) {
+            console.log("Error fetching categories:", e);
+        }
+    };
+
+    useEffect(() => {
+        getDesigns();
+        getCategories();
+    }, []);
 
     const filteredDesigns = designs.filter(design =>
         design.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -52,7 +71,14 @@ export const ViewDesigns = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setSelectedDesign(prev => ({ ...prev, [name]: value }));
+
+        // Special case for category selection (store _id)
+        if (name === "category_id") {
+            // Find the full category object if needed, but we only need _id for submission
+            setSelectedDesign(prev => ({ ...prev, category_id: value }));
+        } else {
+            setSelectedDesign(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleUpdateSubmit = async (e) => {
@@ -62,7 +88,7 @@ export const ViewDesigns = () => {
             const formData = new FormData();
             formData.append("title", selectedDesign.title);
             formData.append("description", selectedDesign.description);
-            formData.append("category_id", selectedDesign.category_id._id || selectedDesign.category_id);
+            formData.append("category_id", selectedDesign.category_id);  // <-- pass category_id as id
 
             if (selectedDesign.newImageFile) {
                 formData.append("image", selectedDesign.newImageFile);
@@ -89,7 +115,6 @@ export const ViewDesigns = () => {
             console.log("Update error:", e);
         }
     };
-
 
     const handleDeleteDesign = async (design) => {
         try {
@@ -180,7 +205,6 @@ export const ViewDesigns = () => {
                 </div>
             )}
 
-            {/* Modal */}
             {showModal && selectedDesign && (
                 <div className="modal-overlay">
                     <div className="modal">
@@ -188,15 +212,38 @@ export const ViewDesigns = () => {
                         <form onSubmit={handleUpdateSubmit}>
                             <div className="form-group">
                                 <label>Title</label>
-                                <input type="text" name="title" value={selectedDesign.title} onChange={handleInputChange} required />
+                                <input
+                                  type="text"
+                                  name="title"
+                                  value={selectedDesign.title}
+                                  onChange={handleInputChange}
+                                  required
+                                />
                             </div>
                             <div className="form-group">
                                 <label>Category</label>
-                                <input type="text" name="category" value={selectedDesign.category_id.name} onChange={handleInputChange} required />
+                                {/* Dropdown to select category */}
+                                <select
+                                    name="category_id"
+                                    value={selectedDesign.category_id?._id || selectedDesign.category_id || ""}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    <option value="" disabled>Select Category</option>
+                                    {categories.map(cat => (
+                                        <option key={cat._id} value={cat._id}>{cat.name}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="form-group">
                                 <label>Description</label>
-                                <textarea name="description" value={selectedDesign.description} onChange={handleInputChange} rows={3} cols={53} />
+                                <textarea
+                                  name="description"
+                                  value={selectedDesign.description}
+                                  onChange={handleInputChange}
+                                  rows={3}
+                                  cols={53}
+                                />
                             </div>
                             <div className="form-group">
                                 <label>Image</label>
@@ -207,7 +254,6 @@ export const ViewDesigns = () => {
                                     onChange={(e) => setSelectedDesign(prev => ({ ...prev, newImageFile: e.target.files[0] }))}
                                 />
                             </div>
-
 
                             <div className="modal-actions">
                                 <button type="submit" className="modal-save">Save</button>

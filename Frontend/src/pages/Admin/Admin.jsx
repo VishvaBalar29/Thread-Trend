@@ -1,25 +1,23 @@
 import { AdminPanel } from "./AdminPanel";
 import '../../assets/css/Admin.css';
-import { Outlet, useNavigate } from 'react-router-dom'; // For nested routes
+import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from "../../store/auth";
-import { Navigate } from "react-router-dom";
 
 export const Admin = () => {
+    const { isAdmin, isLoading, user } = useAuth();
 
-    const { isAdmin, isLoading } = useAuth();
-
-    if(isLoading){
+    if (isLoading) {
         return <h1>Loading...</h1>;
     }
 
-    if (!isAdmin) {
+    if (!isLoading && user && !user.is_admin) {
         return <Navigate to="/" replace />;
     }
     return (
         <div className="admin-container">
             <AdminPanel />
             <main className="main-content">
-                <Outlet /> 
+                <Outlet />
             </main>
         </div>
     );

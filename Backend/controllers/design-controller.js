@@ -56,8 +56,6 @@ const deleteDesign = async (req, res) => {
     }
 }
 
-
-
 const updateDesign = async (req, res) => {
     try {
         const id = req.query.id;
@@ -101,7 +99,7 @@ const updateDesign = async (req, res) => {
 
 const getDesignById = async (req, res) => {
     try {
-        const id = req.query.id;
+        const id = req.params.id;
         if (!id) {
             return sendResponse(res, 400, {}, "Design ID is Required");
         }
@@ -114,5 +112,6 @@ const getDesignById = async (req, res) => {
         return sendResponse(res, 400, {}, `getDesignById controller error ${e}`);
     }
 }
+
 
 module.exports = { add, getDesigns, deleteDesign, updateDesign, getDesignById };

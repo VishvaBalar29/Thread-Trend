@@ -1,4 +1,5 @@
 const Category = require("../models/category-model");
+const Design = require("../models/design-model");
 const sendResponse = require("../utils/response-handler");
 
 
@@ -43,13 +44,17 @@ const deleteCategory = async (req, res) => {
         if (!id) {
             return sendResponse(res, 400, {}, "Category ID is required");
         }
+        const designExist = await Design.find({category_id : id});
+        if(designExist.length > 0){
+            return sendResponse(res, 400, {}, "There are designs related to this category. Please delete them first.");
+        }
         const categoryExist = await Category.findOne({ _id: id });
         if (!categoryExist) {
             return sendResponse(res, 400, {}, "Given Category ID is not found");
         }
         await Category.deleteOne({ _id: id });
         return sendResponse(res, 200, {}, "Deleted Suceessfully");
-    } catch (error) {
+    } catch (e) {
         return sendResponse(res, 400, {}, `delete category controller error ${e}`);
     }
 }
@@ -89,7 +94,5 @@ const getCategoryByName = async (req, res) => {
         return sendResponse(res, 400, {}, `getCategoryById controller error ${e}`);
     }
 }
-
-
 
 module.exports = { add, getCategories, deleteCategory, updateCategory, getCategoryByName };
