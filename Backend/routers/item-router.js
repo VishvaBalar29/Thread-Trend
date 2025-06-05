@@ -11,4 +11,6 @@ router.route("/get/order/:id").get(authMiddleware, itemController.getItemsByOrde
 
 router.route("/delete/:id").delete(authMiddleware, authorizeAdmin, itemController.deleteItem);
 
+router.route("/update/:id").patch(authMiddleware, authorizeAdmin, itemController.updateItem);
+
 module.exports = router;

@@ -6,6 +6,9 @@ const categoryRouter = require("./routers/category-router");
 const designRouter = require("./routers/design-router");
 const orderRouter = require("./routers/order-router");
 const itemRouter = require("./routers/item-router");
+const measurementRouter = require("./routers/measurement-router");
+const defaultMeasurementRouter = require("./routers/default-measurement-router");
+const itemMeasurementRouter = require("./routers/item-measurement-router");
 const connectDb = require("./utils/db");
 const errorMiddleware = require("./middlewares/error-middleware")
 const cors = require('cors');
@@ -35,6 +38,9 @@ app.use("/category", categoryRouter);
 app.use("/design", designRouter);
 app.use("/order", orderRouter);
 app.use("/item", itemRouter);
+app.use("/measurement", measurementRouter);
+app.use("/default-measurement", defaultMeasurementRouter);
+app.use("/item-measurement", itemMeasurementRouter);
 
 
 // for error-middleware

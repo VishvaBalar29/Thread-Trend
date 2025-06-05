@@ -114,7 +114,35 @@ const getItemsByOrderId = async (req, res) => {
     }
 };
 
+const updateItem = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updates = req.body;
+
+        if (!id || id.trim() === "") {
+            return sendResponse(res, 400, {}, "Please provide a valid item ID.");
+        }
+
+        const item = await Item.findById(id);
+        if (!item) {
+            return sendResponse(res, 404, {}, "Item not found.");
+        }
+
+        if (updates.category_id) {
+            const categoryExists = await Category.findById(updates.category_id);
+            if (!categoryExists) {
+                return sendResponse(res, 400, {}, "Invalid category_id: Category not found.");
+            }
+        }
+
+        const updatedItem = await Item.findByIdAndUpdate(id, updates, { new: true });
+
+        return sendResponse(res, 200, { item: updatedItem }, "Item updated successfully.");
+    } catch (e) {
+        return sendResponse(res, 500, {}, `updateItem controller error: ${e.message}`);
+    }
+};
 
 
 
-module.exports = { add, deleteItem, getItem, getItemsByOrderId };
+module.exports = { add, deleteItem, getItem, getItemsByOrderId, updateItem };
