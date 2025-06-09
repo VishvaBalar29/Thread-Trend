@@ -14,10 +14,10 @@ const add = async (req, res) => {
         }
 
         const itemExist = await Item.findById(item_id);
-        if(!itemExist)  return sendResponse(res, 400, {}, "Given Item ID is not exist");
+        if (!itemExist) return sendResponse(res, 400, {}, "Given Item ID is not exist");
 
         const keyExist = await Measurement.findById(key_id);
-        if(!keyExist)  return sendResponse(res, 400, {}, "Given Key ID is not exist");
+        if (!keyExist) return sendResponse(res, 400, {}, "Given Key ID is not exist");
 
         const exist = await ItemMeasurement.findOne({ item_id, key_id });
         if (exist) {
@@ -29,10 +29,10 @@ const add = async (req, res) => {
     } catch (e) {
         return sendResponse(res, 400, {}, `add item-measurement controller error : ${e}`);
     }
-    
+
 }
 
-const getMeasurements = async (req,res) => {
+const getMeasurements = async (req, res) => {
     try {
         const measurements = await ItemMeasurement.find().populate("key_id").populate("item_id");
         return sendResponse(res, 200, { measurements }, "All item measurements fetched successfully");
@@ -41,17 +41,29 @@ const getMeasurements = async (req,res) => {
     }
 }
 
-const getMeasurementByItemId = async (req,res) => {
+const getMeasurementByItemId = async (req, res) => {
     try {
-        const id = req.params.itemId;
-        if (!id) {
+        const itemid = req.params.itemId;
+        const itemExist = await Item.findById(itemid).populate('order_id');
+
+        if (
+            itemExist.order_id.customer_id.toString() !== req.user.customerId &&
+            !req.user.is_admin
+        ) {
+            return sendResponse(res, 403, {}, "You are not authorized to access this item");
+        }
+       
+
+        if (!itemid) {
             return sendResponse(res, 400, {}, "Item ID is required");
         }
-        const itemExist = await Item.findById(id);
-        if(!itemExist)  return sendResponse(res, 400, {}, "Given Item ID is not exist");
-        const measurements = await ItemMeasurement.find({ item_id: id }).populate("key_id");
-        return sendResponse(res, 200, { measurements }, "Measurements for given item fetched successfully");
-    } catch (e) {
+        if (!itemExist){return sendResponse(res, 400, {}, "Given Item ID is not exist");}
+
+        const measurements = await ItemMeasurement.find({ item_id: itemid }).populate("key_id");
+            return sendResponse(res, 200, { measurements }, "Measurements for given item fetched successfully");
+        
+    }
+    catch (e) {
         return sendResponse(res, 400, {}, `getMeasurementById controller error : ${e}`);
     }
 }
@@ -97,4 +109,4 @@ const updateMeasurement = async (req, res) => {
 
 
 
-module.exports = {add, getMeasurements, getMeasurementByItemId, deleteMeasurement, updateMeasurement };
+module.exports = { add, getMeasurements, getMeasurementByItemId, deleteMeasurement, updateMeasurement };

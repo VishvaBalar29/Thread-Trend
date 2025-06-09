@@ -18,6 +18,9 @@ import { AddCategory } from "./pages/Admin/AddCategory";
 import { ViewCategories } from "./pages/Admin/ViewCategories";
 import { ViewDesigns } from "./pages/Admin/ViewDesigns";
 import { DesignDetails } from "./pages/DesignDetails";
+import { ViewOrder } from "./pages/Admin/viewOrder";
+import { ViewItem } from "./pages/viewItem";
+import { Unauthorized } from "./pages/Unauthorized";
 
 
 const App = () => {
@@ -35,6 +38,8 @@ const App = () => {
           <Route path="/request-forgot-password" element={<RequestForgotPassword />}></Route>
           <Route path="/customer/forgot-password" element={<ForgotPassword />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/item/:itemId" element={<ViewItem />}></Route>
+          <Route path="/unauthorized" element={<Unauthorized />}></Route>
 
           
           <Route path="/admin" element={<Admin />}>
@@ -45,6 +50,7 @@ const App = () => {
             <Route path="view-designs" element={<ViewDesigns />} />
             <Route path="add-category" element={<AddCategory />} />
             <Route path="view-categories" element={<ViewCategories />} />
+            <Route path="/admin/order/:custId" element={<ViewOrder />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>

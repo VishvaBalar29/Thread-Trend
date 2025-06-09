@@ -10,4 +10,8 @@ router.route("/delete/:id").delete(authMiddleware, authorizeAdmin, orderControll
 
 router.route("/get/:id").get(orderController.getOrder);
 
+router.route("/getByCustId/:custId").get(authMiddleware, orderController.getOrderByCustomerId);
+
+router.route("/update/:orderId").patch(authMiddleware, authorizeAdmin, orderController.updateOrder);
+
 module.exports = router;

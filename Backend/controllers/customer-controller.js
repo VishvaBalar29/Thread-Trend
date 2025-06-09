@@ -84,12 +84,11 @@ const getAllCustomer = async (req, res) => {
 
 const getCustomerById = async (req, res) => {
     try {
-        const id = req.query.id;
+        const id = req.params.id;
 
         if (!id) {
             return res.status(400).json({ msg: "Customer ID is required" });
         }
-
         const customer = await Customer.findOne({ _id: id }, { password: 0, is_admin: 0, __v: 0 });
         if (!customer) {
             return res.status(200).json({ msg: "Customer not found" });

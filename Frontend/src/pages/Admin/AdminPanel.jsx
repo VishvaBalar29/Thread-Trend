@@ -50,6 +50,7 @@ export const AdminPanel = () => {
             <NavLink to="/admin/view-categories" onClick={closeSidebar}>
               <i className="fas fa-folder-open"></i> View Category
             </NavLink>
+           
           </li>
         </ul>
       </aside>

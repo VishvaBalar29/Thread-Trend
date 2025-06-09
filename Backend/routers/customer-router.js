@@ -13,7 +13,7 @@ router.route("/login").post(preventLoggedInAccess, validateMiddleware(loginSchem
 
 router.route("/get").get(authMiddleware, authorizeAdmin, customerController.getAllCustomer);
 
-router.route("/get-customer").get(authMiddleware, authorizeAdmin, customerController.getCustomerById);
+router.route("/get/:id").get(authMiddleware, authorizeAdmin, customerController.getCustomerById);
 
 router.route("/delete").delete(authMiddleware, authorizeAdmin, customerController.deleteCustomer);
 

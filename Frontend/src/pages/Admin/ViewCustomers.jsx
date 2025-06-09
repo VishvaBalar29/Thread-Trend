@@ -3,6 +3,7 @@ import '../../assets/css/ViewCustomers.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export const ViewCustomers = () => {
     const [customers, setCustomers] = useState([]);
@@ -134,7 +135,7 @@ export const ViewCustomers = () => {
                 <tbody>
                     {currentCustomers.length > 0 ? (
                         currentCustomers.map((curEle, index) => {
-                            const { name, email, mobile_number, joined_date } = curEle;
+                            const { _id, name, email, mobile_number, joined_date } = curEle;
                             return (
                                 <tr key={index}>
                                     <td>{name}</td>
@@ -142,12 +143,13 @@ export const ViewCustomers = () => {
                                     <td>{mobile_number}</td>
                                     <td>{joined_date.split('T')[0]}</td>
                                     <td>
+                                        <Link to={`/admin/order/${_id}`} key={_id} style={{ textDecoration: 'none', color: 'inherit' }}>
                                         <button
                                             className="icon-btn history-btn"
-                                            onClick={() => alert("History modal logic here")}
                                         >
                                             <FontAwesomeIcon icon={faClockRotateLeft} />
                                         </button>
+                                        </Link>
                                     </td>
                                     <td>
                                         <button className="icon-btn update-btn" onClick={() => handleUpdateCustomer(curEle)}>
