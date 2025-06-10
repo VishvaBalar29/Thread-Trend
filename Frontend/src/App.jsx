@@ -19,8 +19,10 @@ import { ViewCategories } from "./pages/Admin/ViewCategories";
 import { ViewDesigns } from "./pages/Admin/ViewDesigns";
 import { DesignDetails } from "./pages/DesignDetails";
 import { ViewOrder } from "./pages/Admin/viewOrder";
-import { ViewItem } from "./pages/viewItem";
+
 import { Unauthorized } from "./pages/Unauthorized";
+import { ViewItem } from "./pages/ViewItem";
+import { ViewKeys } from "./pages/Admin/VIewKeys";
 
 
 const App = () => {
@@ -50,6 +52,7 @@ const App = () => {
             <Route path="view-designs" element={<ViewDesigns />} />
             <Route path="add-category" element={<AddCategory />} />
             <Route path="view-categories" element={<ViewCategories />} />
+            <Route path="view-keys" element={<ViewKeys />} />
             <Route path="/admin/order/:custId" element={<ViewOrder />}></Route>
           </Route>
         </Routes>

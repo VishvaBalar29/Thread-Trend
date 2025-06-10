@@ -49,8 +49,12 @@ export const AdminPanel = () => {
           <li>
             <NavLink to="/admin/view-categories" onClick={closeSidebar}>
               <i className="fas fa-folder-open"></i> View Category
-            </NavLink>
-           
+            </NavLink>           
+          </li>
+          <li>
+            <NavLink to="/admin/view-keys" onClick={closeSidebar}>
+              <i class="fa-solid fa-key"></i> View Keys
+            </NavLink>           
           </li>
         </ul>
       </aside>

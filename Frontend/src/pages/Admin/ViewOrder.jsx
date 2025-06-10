@@ -226,7 +226,7 @@ export const ViewOrder = () => {
                                 <p>No items found for this order.</p>
                             )}
 
-                            <div className="order-total">Total Price: ₹{totalPrice}</div>
+                            <div className="order-total">Total : ₹{totalPrice}</div>
                         </div>
                     );
                 })
