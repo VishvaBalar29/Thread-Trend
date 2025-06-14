@@ -35,10 +35,16 @@ export const DesignDetails = () => {
         <div className="page-wrapper">
             <div className="design-detail-container">
                 <div className="design-image">
-                    <img
-                        src={`http://localhost:5000/uploads/designs/${design.image}`}
-                        alt={design.title}
-                    />
+                    <a
+                        href={`http://localhost:5000/uploads/designs/${design.image}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            src={`http://localhost:5000/uploads/designs/${design.image}`}
+                            alt={design.title}
+                        />
+                    </a>
                 </div>
                 <div className="design-info">
                     <span className="design-category">{design.category}</span>

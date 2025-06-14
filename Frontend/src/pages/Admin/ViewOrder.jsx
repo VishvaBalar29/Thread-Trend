@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const ViewOrder = () => {
     const { custId } = useParams();
     const token = localStorage.getItem("token");
+    const navigate = useNavigate();
 
     const [orders, setOrders] = useState([]);
     const [itemsMap, setItemsMap] = useState({});
@@ -105,7 +107,7 @@ export const ViewOrder = () => {
     };
 
     const handleDeleteItem = async (itemId, orderId) => {
-        if (!window.confirm("Are you sure you want to delete this item?")) return;
+        
 
         try {
             const response = await fetch(`http://localhost:5000/item/delete/${itemId}`, {
@@ -137,7 +139,7 @@ export const ViewOrder = () => {
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
         console.log(selectedOrder);
-        
+
         try {
             const response = await fetch(`http://localhost:5000/order/update/${selectedOrder._id}`, {
                 method: "PATCH",
@@ -157,19 +159,42 @@ export const ViewOrder = () => {
                 setShowModal(false);
                 getOrdersAndItems();
             } else {
-                 toast.error(data.msg, { theme: "dark" });
+                toast.error(data.msg, { theme: "dark" });
             }
         } catch (error) {
             console.error("Error updating order:", error);
         }
     };
 
+    const addOrder = async (e) => {
+        try {
+            const response = await fetch(`http://localhost:5000/order/add`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({"customer_id" : custId}),
+            })
+            const res_data = await response.json();
+            if(response.ok){
+                navigate(`/add-item/${res_data.data.order._id}`)
+            }
+            else{
+                toast.error(res_data.msg);
+            }
+        } catch (e) {
+            console.error("Error fetching add order", e);
+        }
+
+    }
+
     return (
         <div className="order-container">
             <div className="order-header">
                 <h2>Customer Name: {currCustName} (+91 {currCustMobileNo})</h2>
                 <div className="order-meta">
-                    <button className="add-order-btn">+ Add Order</button>
+                    <button className="add-order-btn" onClick={() => addOrder()}>+ Add Order</button>
                     <span className="order-count">Total Orders: {orders.length}</span>
                 </div>
             </div>

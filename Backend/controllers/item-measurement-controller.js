@@ -1,5 +1,4 @@
 const Measurement = require("../models/measurement-model");
-const DefaultMeasurement = require("../models/default-measurement-model");
 const ItemMeasurement = require("../models/item-measurement-model");
 const Item = require("../models/item-model");
 const sendResponse = require("../utils/response-handler");
@@ -52,16 +51,16 @@ const getMeasurementByItemId = async (req, res) => {
         ) {
             return sendResponse(res, 403, {}, "You are not authorized to access this item");
         }
-       
+
 
         if (!itemid) {
             return sendResponse(res, 400, {}, "Item ID is required");
         }
-        if (!itemExist){return sendResponse(res, 400, {}, "Given Item ID is not exist");}
+        if (!itemExist) { return sendResponse(res, 400, {}, "Given Item ID is not exist"); }
 
         const measurements = await ItemMeasurement.find({ item_id: itemid }).populate("key_id");
-            return sendResponse(res, 200, { measurements }, "Measurements for given item fetched successfully");
-        
+        return sendResponse(res, 200, { measurements }, "Measurements for given item fetched successfully");
+
     }
     catch (e) {
         return sendResponse(res, 400, {}, `getMeasurementById controller error : ${e}`);
@@ -107,6 +106,70 @@ const updateMeasurement = async (req, res) => {
     }
 };
 
+const saveAllMeasurements = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const { item_id, measurements } = req.body;
+        if (!item_id || !measurements || !Array.isArray(measurements)) {
+            return sendResponse(res, 400, {}, "Invalid data structure");
+        }
+
+        const item = await Item.findById(item_id).session(session);
+        if (!item) {
+            throw new Error("Item does not exist");
+        }
+
+        const resultMeasurements = [];
+
+        for (const entry of measurements) {
+            let { key_name, value, key_id } = entry;
+
+            if (!value || (!key_id && !key_name)) {
+                throw new Error("Invalid measurement entry: key_id or key_name and value are required");
+            }
+
+            // Step 1: If key_id not provided, create new key
+            if (!key_id && key_name) {
+                key_name = key_name.toLowerCase();
+                const existingKey = await Measurement.findOne({ key_name }).session(session);
+                if (existingKey) {
+                    throw new Error(`Key "${key_name}" already exists`);
+                }
+
+                const newKey = await Measurement.create([{ key_name }], { session });
+                key_id = newKey[0]._id;
+            }
+
+            // Step 2: Check duplicate measurement
+            const exists = await ItemMeasurement.findOne({ item_id, key_id }).session(session);
+            if (exists) {
+                throw new Error(`Measurement already exists for key ID: ${key_id}`);
+            }
+
+            // Step 3: Save measurement
+            const saved = await ItemMeasurement.create([{
+                item_id,
+                key_id,
+                value
+            }], { session });
+
+            resultMeasurements.push(saved[0]);
+        }
+
+        await session.commitTransaction();
+        session.endSession();
+
+        return sendResponse(res, 200, { resultMeasurements }, "All measurements saved successfully");
+    } catch (e) {
+        await session.abortTransaction();
+        session.endSession();
+        return sendResponse(res, 400, {}, `Transaction failed: ${e.message}`);
+    }
+};
 
 
-module.exports = { add, getMeasurements, getMeasurementByItemId, deleteMeasurement, updateMeasurement };
+
+
+module.exports = { add, getMeasurements, getMeasurementByItemId, deleteMeasurement, updateMeasurement, saveAllMeasurements };

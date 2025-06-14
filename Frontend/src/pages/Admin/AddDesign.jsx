@@ -13,7 +13,7 @@ export const AddDesign = () => {
   });
 
   const [loadingCategoryId, setLoadingCategoryId] = useState(false);
-  const [categories, setCategories] = useState([]); // 🆕 For dropdown
+  const [categories, setCategories] = useState([]); 
   const token = localStorage.getItem("token");
 
   //  Fetch all categories on component mount

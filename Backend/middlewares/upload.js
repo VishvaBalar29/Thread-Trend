@@ -1,27 +1,32 @@
 const multer = require("multer");
 const path = require("path");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/designs"); // save in uploads folder
-  },
-  filename: function (req, file, cb) {
-    const uniqueName = Date.now() + path.extname(file.originalname); 
-    cb(null, uniqueName);
-  },
+// Design Image Storage
+const designStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/designs"),
+  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
 });
 
+// Item Image Storage
+const itemStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/items"),
+  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
+});
 
+// Filter (common for both)
 const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype.startsWith("image/")
-  ) {
+  if (file.mimetype.startsWith("image/")) {
     cb(null, true);
   } else {
     cb(new Error("Only image files are allowed!"), false);
   }
 };
 
-const upload = multer({ storage, fileFilter });
+// Exports
+const uploadDesign = multer({ storage: designStorage, fileFilter });
+const uploadItem = multer({ storage: itemStorage, fileFilter });
 
-module.exports = upload;
+module.exports = {
+  uploadDesign,
+  uploadItem
+};

@@ -104,7 +104,7 @@ export const Design = () => {
               setCurrentPage(1);
             }}
           >
-            <option value="">All Categories</option>
+            <option value="">Categories</option>
             {categories.map((cat) => (
               <option key={cat._id} value={cat._id}>
                 {cat.name}
@@ -123,7 +123,7 @@ export const Design = () => {
                   alt={title}
                   loading="lazy"
                   width="300"
-                  height="225"
+                  height="300"
                 />
                 <div className="card-content">
                   <h2 className="card-title">{title}</h2>

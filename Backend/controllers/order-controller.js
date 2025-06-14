@@ -94,31 +94,36 @@ const updateOrder = async (req, res) => {
         const { orderId } = req.params;
         const { status, delivery_date } = req.body;
 
-        if (!status || !delivery_date) {
-            return sendResponse(res, 400, {}, "Status and delivery_date are required.");
+        if (!status && !delivery_date) {
+            return sendResponse(res, 400, {}, "At least one field (status or delivery_date) must be provided.");
         }
-
 
         const order = await Order.findById(orderId);
         if (!order) {
             return sendResponse(res, 404, {}, "Order not found.");
         }
-        const orderDate = new Date(order.order_date);
-        const newDeliveryDate = new Date(delivery_date);
 
-        if (newDeliveryDate <= orderDate) {
-            return sendResponse(res, 400, {}, "Delivery date must be after order date.");
+        if (delivery_date) {
+            const orderDate = new Date(order.order_date);
+            const newDeliveryDate = new Date(delivery_date);
+            if (newDeliveryDate <= orderDate) {
+                return sendResponse(res, 400, {}, "Delivery date must be after order date.");
+            }
+            order.delivery_date = newDeliveryDate;
         }
 
-        order.status = status;
-        order.delivery_date = newDeliveryDate;
+        if (status) {
+            order.status = status;
+        }
+
         await order.save();
 
         return sendResponse(res, 200, { order }, "Order updated successfully.");
     } catch (e) {
-        return sendResponse(res, 400, {}, `updateOrder controller error : ${e}`)
+        return sendResponse(res, 400, {}, `updateOrder controller error : ${e}`);
     }
 }
+
 
 
 module.exports = { add, deleteOrder, getOrder, getOrderByCustomerId, updateOrder };

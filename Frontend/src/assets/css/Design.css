@@ -1,16 +1,5 @@
 @import url("./variable.css");
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: var(--primary-color2);
-  color: var(--text-color);
-}
 
 .container {
   max-width: 1200px;
@@ -32,10 +21,9 @@ body {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border: 1.5px solid var(--secondary-color);
-  border-radius: 6px;
+  border-radius: 4px;
   transition: border-color 0.2s ease;
   color: var(--text-color);
-  background: var(--primary-color);
 }
 
 .filters input[type="search"]:focus {
@@ -48,12 +36,13 @@ body {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border: 1.5px solid var(--secondary-color);
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--primary-color);
   cursor: pointer;
   min-width: 150px;
   color: var(--text-color);
   transition: border-color 0.2s ease;
+  width: 0%;
 }
 
 .filters select:focus {
@@ -67,14 +56,15 @@ body {
   gap: 1.5rem;
   overflow-x: auto;
   padding-bottom: 1rem;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
+
 .cards::-webkit-scrollbar {
   display: none;
 }
 
 .card {
-  flex: 0 0 calc((100% - 3 * 1.5rem) / 4); 
+  flex: 0 0 calc((100% - 3 * 1.5rem) / 4);
   background: var(--primary-color);
   border-radius: 10px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
@@ -90,7 +80,6 @@ body {
 }
 
 .card img {
-  width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
@@ -155,12 +144,14 @@ body {
 }
 
 .page-btn.active {
-  background: #4c45d6cc; /* lighter secondary with transparency */
+  background: #4c45d6cc;
+  /* lighter secondary with transparency */
 }
 
 @media (max-width: 900px) {
   .card {
-    flex: 0 0 calc((100% - 2 * 1.5rem) / 3); /* 3 cards */
+    flex: 0 0 calc((100% - 2 * 1.5rem) / 3);
+    /* 3 cards */
   }
 }
 
@@ -173,11 +164,12 @@ body {
   .filters input[type="search"],
   .filters select {
     width: 100%;
-    padding : 0
+    padding: 0
   }
 
 
   .card {
-    flex: 0 0 100%; /* 1 card per row on small screens */
+    flex: 0 0 100%;
+    /* 1 card per row on small screens */
   }
 }

@@ -10,15 +10,17 @@ const add = async (req, res) => {
     try {
         const { order_id, category_id, item_name } = req.body;
 
+        if (!item_name || item_name == "") {
+            return sendResponse(res, 400, {}, "Item name is required");
+        }
+
         if (!order_id || !mongoose.Types.ObjectId.isValid(order_id)) {
             return sendResponse(res, 400, {}, "Invalid or missing Order ID");
         }
         if (!category_id || !mongoose.Types.ObjectId.isValid(category_id)) {
             return sendResponse(res, 400, {}, "Invalid or missing Category ID");
         }
-        if (!item_name) {
-            return sendResponse(res, 400, {}, "Item name is required");
-        }
+
 
         const orderExist = await Order.findById(order_id);
         if (!orderExist) {
@@ -80,8 +82,8 @@ const getItem = async (req, res) => {
         }
 
         const item = await Item.findById(itemId)
-            .populate('order_id')     
-            .populate('category_id'); 
+            .populate('order_id')
+            .populate('category_id');
 
         if (!item) {
             return sendResponse(res, 404, {}, 'Item not found');
@@ -102,7 +104,7 @@ const getItemsByOrderId = async (req, res) => {
         }
 
         const items = await Item.find({ order_id: orderId })
-            .populate('category_id'); 
+            .populate('category_id');
 
         if (items.length === 0) {
             return sendResponse(res, 404, {}, 'No items found for this order');
@@ -128,6 +130,10 @@ const updateItem = async (req, res) => {
             return sendResponse(res, 404, {}, "Item not found.");
         }
 
+        if (req.file) {
+            updates.sample_image = req.file.filename; // or req.file.path if you prefer full path
+        }
+
         if (updates.category_id) {
             const categoryExists = await Category.findById(updates.category_id);
             if (!categoryExists) {
@@ -142,6 +148,7 @@ const updateItem = async (req, res) => {
         return sendResponse(res, 500, {}, `updateItem controller error: ${e.message}`);
     }
 };
+
 
 
 

@@ -175,15 +175,34 @@ export const ViewItem = () => {
     return (
         <div className="view-item-container">
             {item ? (
-                <div className="item-details">
-                    <h2>{item.item_name}</h2>
-                    <p><strong>Category:</strong> {item.category_id.name}</p>
-                    <p><strong>Silai Charges:</strong> ₹{item.silaiCharges}</p>
-                    <p><strong>Order Status:</strong> {item.order_id.status}</p>
-                    <p><strong>Order Date:</strong> {new Date(item.order_id.order_date).toLocaleDateString()}</p>
-                    <p><strong>Delivery Date:</strong> {new Date(item.order_id.delivery_date).toLocaleDateString()}</p>
-                    {item.sample_image && <img src={item.sample_image} alt="Sample" className="sample-image" />}
+                <div className="item-details-row">
+                    <div className="item-details">
+                        <h2>{item.item_name}</h2>
+                        <p><strong>Category:</strong> {item.category_id.name}</p>
+                        <p><strong>Silai Charges:</strong> ₹{item.silaiCharges}</p>
+                        <p><strong>Order Status:</strong> {item.order_id.status}</p>
+                        <p><strong>Order Date:</strong> {new Date(item.order_id.order_date).toLocaleDateString()}</p>
+                        <p><strong>Delivery Date:</strong> {new Date(item.order_id.delivery_date).toLocaleDateString()}</p>
+                    </div>
+
+                    {item.sample_image && (
+                        <div className="image-box">
+                            <a
+                                href={`http://localhost:5000/uploads/items/${item.sample_image}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img
+                                    src={`http://localhost:5000/uploads/items/${item.sample_image}`}
+                                    alt="Sample"
+                                    className="sample-image"
+                                />
+                            </a>
+                        </div>
+                    )}
                 </div>
+
+
             ) : <p>Loading item details...</p>}
 
             <div className="measurement-section">

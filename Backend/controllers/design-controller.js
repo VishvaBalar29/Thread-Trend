@@ -60,7 +60,8 @@ const updateDesign = async (req, res) => {
     try {
         const id = req.query.id;
         if (!id) return sendResponse(res, 400, {}, "Design ID is required");
-
+        console.log(req.body);
+        
         const { category_id, title, description } = req.body;
         if (!category_id || !title) {
             return sendResponse(res, 400, {}, "Required fields: category_id and title");

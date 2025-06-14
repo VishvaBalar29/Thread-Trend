@@ -18,11 +18,12 @@ import { AddCategory } from "./pages/Admin/AddCategory";
 import { ViewCategories } from "./pages/Admin/ViewCategories";
 import { ViewDesigns } from "./pages/Admin/ViewDesigns";
 import { DesignDetails } from "./pages/DesignDetails";
-import { ViewOrder } from "./pages/Admin/viewOrder";
-
+import { ViewOrder } from "./pages/Admin/ViewOrder";
 import { Unauthorized } from "./pages/Unauthorized";
 import { ViewItem } from "./pages/ViewItem";
 import { ViewKeys } from "./pages/Admin/VIewKeys";
+import { AddItem } from "./pages/Admin/AddItem";
+import { ViewSingleOrder } from "./pages/ViewSingleOrder";
 
 
 const App = () => {
@@ -42,6 +43,8 @@ const App = () => {
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/item/:itemId" element={<ViewItem />}></Route>
           <Route path="/unauthorized" element={<Unauthorized />}></Route>
+          <Route path="/add-item/:orderId" element={<AddItem />}></Route>
+          <Route path="/order/:orderId" element={<ViewSingleOrder />}></Route>
 
           
           <Route path="/admin" element={<Admin />}>

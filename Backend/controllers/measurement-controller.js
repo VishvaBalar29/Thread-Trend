@@ -8,46 +8,46 @@ const mongoose = require("mongoose");
 const add = async (req, res) => {
     try {
         let { key_name } = req.body;
-        if(!key_name || key_name == ""){
+        if (!key_name || key_name == "") {
             return sendResponse(res, 400, {}, `Key name is Required`);
         }
         key_name = key_name.toLowerCase();
         const keyExist = await Measurement.findOne({ key_name });
-        if(keyExist){
+        if (keyExist) {
             return sendResponse(res, 400, {}, `Key is already exist`);
         }
         const measurement = await Measurement.create({
             key_name
         })
-        return sendResponse(res, 200, {measurement}, `Key name is registered successfully`);
+        return sendResponse(res, 200, { measurement }, `Key name is registered successfully`);
     } catch (e) {
         return sendResponse(res, 400, {}, `add key controller error : ${e}`);
     }
 }
 
-const getMeasurements = async (req,res) => {
+const getMeasurements = async (req, res) => {
     try {
         const measurements = await Measurement.find({});
-        if(!measurements){
+        if (!measurements) {
             return sendResponse(res, 400, {}, `Measurements not found`);
         }
-        return sendResponse(res, 200, {measurements}, `Measurements Fetched`);
+        return sendResponse(res, 200, { measurements }, `Measurements Fetched`);
     } catch (e) {
         return sendResponse(res, 400, {}, `getMeasurements controller error : ${e}`);
     }
 }
 
-const getMeasurementById = async (req,res) => {
+const getMeasurementById = async (req, res) => {
     try {
         const id = req.params.id;
-        if(!id || id == ""){
+        if (!id || id == "") {
             return sendResponse(res, 400, {}, `Please enter the valid Key ID`);
         }
-        const key = await Measurement.findOne({_id : id});
-        if(!key){
+        const key = await Measurement.findOne({ _id: id });
+        if (!key) {
             return sendResponse(res, 400, {}, `Given Key ID is not exist`);
         }
-        return sendResponse(res, 200, {key}, `Measurement Fetched`);
+        return sendResponse(res, 200, { key }, `Measurement Fetched`);
     } catch (e) {
         return sendResponse(res, 400, {}, `getMeasurementById controller error : ${e}`);
     }
@@ -66,8 +66,8 @@ const deleteMeasurement = async (req, res) => {
             return sendResponse(res, 404, {}, `Measurement not found`);
         }
 
-        const isInCategoryDefault = await DefaultMeasurement.findOne({ key_id: id });  
-        
+        const isInCategoryDefault = await DefaultMeasurement.findOne({ key_id: id });
+
         const isInItemMeasurement = await ItemMeasurement.findOne({ key_id: id });
 
         if (isInCategoryDefault || isInItemMeasurement) {
@@ -118,6 +118,23 @@ const updateMeasurement = async (req, res) => {
     }
 };
 
+const getNonDefaultMeasurement = async (req, res) => {
+    try {
+        const defaultKeys = await DefaultMeasurement.find({}, 'key_id');
+        const keyIds = defaultKeys.map(dm => dm.key_id);
+
+        const measurements = await Measurement.find({ _id: { $nin: keyIds } });
+
+       if (!measurements || measurements.length === 0) {
+            return sendResponse(res, 404, {}, 'No non-default measurements found');
+        }
+
+        return sendResponse(res, 200, { measurements }, 'Non-default measurements fetched');
+    } catch (e) {
+        return sendResponse(res, 400, {}, `getNonDefaultMeasurement controller error : ${e}`);
+    }
+}
 
 
-module.exports = {add, getMeasurements, getMeasurementById, deleteMeasurement, updateMeasurement };
+
+module.exports = { add, getMeasurements, getMeasurementById, deleteMeasurement, updateMeasurement, getNonDefaultMeasurement };

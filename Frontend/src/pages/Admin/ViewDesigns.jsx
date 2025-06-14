@@ -88,7 +88,7 @@ export const ViewDesigns = () => {
             const formData = new FormData();
             formData.append("title", selectedDesign.title);
             formData.append("description", selectedDesign.description);
-            formData.append("category_id", selectedDesign.category_id);  // <-- pass category_id as id
+            formData.append("category_id", selectedDesign.category_id._id || selectedDesign.category_id);
 
             if (selectedDesign.newImageFile) {
                 formData.append("image", selectedDesign.newImageFile);
