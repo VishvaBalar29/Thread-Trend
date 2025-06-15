@@ -24,6 +24,7 @@ import { ViewItem } from "./pages/ViewItem";
 import { ViewKeys } from "./pages/Admin/VIewKeys";
 import { AddItem } from "./pages/Admin/AddItem";
 import { ViewSingleOrder } from "./pages/ViewSingleOrder";
+import { Measurements } from "./pages/Admin/Measurements";
 
 
 const App = () => {
@@ -57,6 +58,7 @@ const App = () => {
             <Route path="view-categories" element={<ViewCategories />} />
             <Route path="view-keys" element={<ViewKeys />} />
             <Route path="/admin/order/:custId" element={<ViewOrder />}></Route>
+            <Route path="measurements" element={<Measurements />} />
           </Route>
         </Routes>
       </BrowserRouter>

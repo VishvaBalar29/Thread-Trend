@@ -1,0 +1,111 @@
+.home-container {
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+
+
+.hero-section {
+  background: url("../images/home/home-main2.jpg") center center / cover no-repeat;
+  height: 80vh;
+  position: relative;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+  padding-right: 5%; 
+}
+
+.hero-section .overlay {
+  background-color: rgba(0, 0, 0, 0.4); 
+  padding: 2rem;
+  color: white;
+  border-radius: 10px;
+  max-width: 800px;
+  text-align: right;
+}
+
+.hero-section h1 {
+  color: #fff;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero-btn {
+  background-color: black;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.hero-btn:hover {
+  background-color: #372bff;
+}
+
+/* Services Section */
+.services-section {
+  padding: 4rem 2rem;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.services-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.services-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.service-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.service-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.service-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.service-card p {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.service-btn {
+  background-color: #4a3aff;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.service-btn:hover {
+  background-color: #372bff;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 1.8rem;
+  }
+}

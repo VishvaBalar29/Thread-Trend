@@ -82,7 +82,7 @@ tbody tr:hover {
 /* Add this below .table-header */
 .table-header {
     display: flex;
-    justify-content: space-between; /* Changed from flex-end to space-between */
+    justify-content: space-between; 
     align-items: center;
     flex-wrap: wrap;
     margin-bottom: 15px;

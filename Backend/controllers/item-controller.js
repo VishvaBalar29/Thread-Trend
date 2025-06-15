@@ -130,14 +130,36 @@ const updateItem = async (req, res) => {
             return sendResponse(res, 404, {}, "Item not found.");
         }
 
+        // Handle image upload
         if (req.file) {
-            updates.sample_image = req.file.filename; // or req.file.path if you prefer full path
+            updates.sample_image = req.file.filename;
         }
 
+        // Validate category_id if provided
         if (updates.category_id) {
             const categoryExists = await Category.findById(updates.category_id);
             if (!categoryExists) {
                 return sendResponse(res, 400, {}, "Invalid category_id: Category not found.");
+            }
+        }
+
+        // Validate delivery_date > order_date if delivery_date is provided
+        if (updates.delivery_date) {
+            const order = await Order.findById(item.order_id);
+            if (!order) {
+                return sendResponse(res, 400, {}, "Order not found for this item.");
+            }
+
+            const deliveryDate = new Date(updates.delivery_date);
+            const orderDate = new Date(order.order_date);
+
+            if (deliveryDate <= orderDate) {
+                return sendResponse(
+                    res,
+                    400,
+                    {},
+                    "Delivery date must be greater than order date."
+                );
             }
         }
 
@@ -148,6 +170,7 @@ const updateItem = async (req, res) => {
         return sendResponse(res, 500, {}, `updateItem controller error: ${e.message}`);
     }
 };
+
 
 
 

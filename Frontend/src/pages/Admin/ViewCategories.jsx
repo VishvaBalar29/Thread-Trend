@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { toast } from "react-toastify";
+import "../../assets/css/ViewCategories.css";
 
 export const ViewCategories = () => {
     const [categories, setCategories] = useState([]);
@@ -104,7 +105,7 @@ export const ViewCategories = () => {
     }
 
     return (
-        <div className="container">
+        <div className="c-container">
             <div className="table-header">
                 <input
                     type="text"
@@ -118,7 +119,7 @@ export const ViewCategories = () => {
                 />
             </div>
 
-            <table>
+            <table className='c-table'>
                 <thead>
                     <tr>
                         <th>Category</th>

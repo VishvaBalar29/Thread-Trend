@@ -53,7 +53,12 @@ export const AdminPanel = () => {
           </li>
           <li>
             <NavLink to="/admin/view-keys" onClick={closeSidebar}>
-              <i class="fa-solid fa-key"></i> View Keys
+              <i className="fa-solid fa-key"></i> View Keys
+            </NavLink>           
+          </li>
+          <li>
+            <NavLink to="/admin/measurements" onClick={closeSidebar}>
+              <i className="fa-solid fa-ruler"></i> Measurements
             </NavLink>           
           </li>
         </ul>

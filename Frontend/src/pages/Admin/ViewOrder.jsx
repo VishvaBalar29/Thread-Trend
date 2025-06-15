@@ -214,12 +214,17 @@ export const ViewOrder = () => {
                                 <div className="order-title-with-icons">
                                     <h3>Order No: {index + 1}</h3>
                                     <div className="order-icons">
-                                        <button className="icon-btn update-btn" onClick={() => openUpdateModal(order)} title="Edit Order">
+                                        <Link to={`/add-item/${order._id}`}>
+                                        <button className="o-add-order-btn">+ Add Item</button>
+                                        </Link>
+                                        <button className="o-icon-btn update-btn" onClick={() => openUpdateModal(order)} title="Edit Order">
                                             <FontAwesomeIcon icon={faPen} />
                                         </button>
-                                        <button className="icon-btn delete-btn" onClick={() => handleDeleteOrder(order._id)} title="Delete Order">
+                                        <button className="o-icon-btn delete-btn" onClick={() => handleDeleteOrder(order._id)} title="Delete Order">
                                             <FontAwesomeIcon icon={faTrash} />
                                         </button>
+                                        
+                                        
                                     </div>
                                 </div>
                                 <p><strong>Status:</strong> {order.status}</p>

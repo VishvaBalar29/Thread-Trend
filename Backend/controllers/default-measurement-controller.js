@@ -32,10 +32,32 @@ const add = async (req, res) => {
 
 const getMeasurements = async (req, res) => {
     try {
-        const all = await DefaultMeasurement.find().populate("category_id").populate("key_id");
-        return sendResponse(res, 200, { measurements: all }, "All default measurements fetched");
+        const measurements = await DefaultMeasurement.find()
+            .populate('category_id', 'name') 
+            .populate('key_id', 'key_name');     
+
+        const grouped = {};
+
+        measurements.forEach(m => {
+            const catName = m.category_id.name;
+            if (!grouped[catName]) grouped[catName] = [];
+
+            grouped[catName].push({
+                _id: m._id,
+                key_id: m.key_id._id,
+                key_name: m.key_id.key_name,
+            });
+        });
+
+        const result = Object.entries(grouped).map(([categoryName, measurements]) => ({
+            categoryName,
+            measurements,
+        }));
+
+        return sendResponse(res, 200, {result} , "Fetched Successfully");
     } catch (e) {
-        return sendResponse(res, 500, {}, `getMeasurements controller error: ${e.message}`);
+        console.error('Error:', e);
+        return sendResponse(res, 500, {}, `get default measurements controller error : ${e}`)
     }
 }
 
@@ -46,9 +68,9 @@ const getMeasurementByCatId = async (req, res) => {
             return sendResponse(res, 400, {}, "Category ID is required");
         }
         const categoryExist = await Category.findById(CatId);
-        if(!categoryExist)  return sendResponse(res, 400, {}, "Given category ID is not valid");
+        if (!categoryExist) return sendResponse(res, 400, {}, "Given category ID is not valid");
         const measurementExist = await DefaultMeasurement.find({ category_id: CatId });
-        if(measurementExist.length == 0){
+        if (measurementExist.length == 0) {
             return sendResponse(res, 400, {}, "Measurements not found");
         }
         const measurements = await DefaultMeasurement.find({ category_id: CatId }).populate("key_id");
@@ -69,6 +91,8 @@ const deleteMeasurement = async (req, res) => {
         if (!deleted) {
             return sendResponse(res, 404, {}, "Default Measurement not found");
         }
+
+        // const exist 
         return sendResponse(res, 200, {}, "Default Measurement deleted successfully");
     } catch (e) {
         return sendResponse(res, 500, {}, `deleteMeasurement controller error: ${e.message}`);

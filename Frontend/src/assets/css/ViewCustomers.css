@@ -47,7 +47,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    min-width: 700px; /* Ensure table doesn't shrink too much */
+    min-width: 500px;
 }
 
 thead {
@@ -122,7 +122,7 @@ button.history-btn:hover {
 }
 
 .update-btn {
-    color: #4CAF50; /* green */
+    color: #4CAF50; 
 }
 
 .delete-btn {

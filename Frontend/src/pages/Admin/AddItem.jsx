@@ -212,7 +212,6 @@ export const AddItem = () => {
                 method: "PATCH",
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    // Don't set Content-Type manually — let browser handle it for multipart/form-data
                 },
                 body: formData,
             });
@@ -259,7 +258,7 @@ export const AddItem = () => {
                 }
                 toast.success("Item Added Successfully.", { theme: "dark" });
             } else {
-                toast.success(orderData.msg, { theme: "dark" });
+                toast.error(orderData.msg, { theme: "dark" });
             }
 
         } catch (e) {
@@ -269,6 +268,8 @@ export const AddItem = () => {
 
     return (
         <div className="form-container">
+            <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Add Item</h2>
+
             <div className="form-groupp">
                 <label>Item Name:</label>
                 <input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} disabled={isItemCreated} />
@@ -286,108 +287,112 @@ export const AddItem = () => {
 
             <button className="btn primary-btn" onClick={createItem}>Create Item</button>
 
-            {dMeasurementShown && (
-                <div className="section">
-                    {defaultMeasurements.length > 0 && (
-                        <div className="measurement-section">
-                            <h3>Default Measurements</h3>
-                            {defaultMeasurements.map((mes) => (
-                                <div key={mes._id} className="form-groupp">
-                                    <label>{mes.key_id.key_name}:</label>
-                                    <input type="text" data-default-key-id={mes.key_id._id} />
-                                </div>
+            {
+        dMeasurementShown && (
+            <div className="section">
+                {defaultMeasurements.length > 0 && (
+                    <div className="measurement-section">
+                        <h3>Default Measurements</h3>
+                        {defaultMeasurements.map((mes) => (
+                            <div key={mes._id} className="form-groupp">
+                                <label>{mes.key_id.key_name}:</label>
+                                <input type="text" data-default-key-id={mes.key_id._id} />
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                <h3>Extra Fields</h3>
+                {extraFields.map((field, index) => (
+                    <div key={index} className="field-row">
+                        <select
+                            value={field.dropdown}
+                            onChange={(e) => {
+                                const updated = [...extraFields];
+                                updated[index].dropdown = e.target.value;
+                                setExtraFields(updated);
+                            }}
+                        >
+                            <option value="">Select Key</option>
+                            {allKeys.map(key => (
+                                <option key={key._id} value={key._id}>{key.key_name}</option>
                             ))}
-                        </div>
-                    )}
+                        </select>
 
-                    <h3>Extra Fields</h3>
-                    {extraFields.map((field, index) => (
-                        <div key={index} className="field-row">
-                            <select
-                                value={field.dropdown}
-                                onChange={(e) => {
-                                    const updated = [...extraFields];
-                                    updated[index].dropdown = e.target.value;
-                                    setExtraFields(updated);
-                                }}
-                            >
-                                <option value="">Select Key</option>
-                                {allKeys.map(key => (
-                                    <option key={key._id} value={key._id}>{key.key_name}</option>
-                                ))}
-                            </select>
+                        <input
+                            type="text"
+                            placeholder="Enter value"
+                            value={field.input}
+                            onChange={(e) => {
+                                const updated = [...extraFields];
+                                updated[index].input = e.target.value;
+                                setExtraFields(updated);
+                            }}
+                        />
 
-                            <input
-                                type="text"
-                                placeholder="Enter value"
-                                value={field.input}
-                                onChange={(e) => {
-                                    const updated = [...extraFields];
-                                    updated[index].input = e.target.value;
-                                    setExtraFields(updated);
-                                }}
-                            />
+                        <button className="remove-btn" onClick={() => handleRemoveField(index)}>❌</button>
+                    </div>
+                ))}
+                <span className="add-link" onClick={handleAddMore}>+ Add more</span>
 
-                            <button className="remove-btn" onClick={() => handleRemoveField(index)}>❌</button>
-                        </div>
-                    ))}
-                    <span className="add-link" onClick={handleAddMore}>+ Add more</span>
+                <h3>Custom Fields</h3>
+                {customFields.map((field, index) => (
+                    <div key={index} className="field-row">
+                        <input
+                            type="text"
+                            placeholder="Enter key name"
+                            value={field.key}
+                            onChange={(e) => {
+                                const updated = [...customFields];
+                                updated[index].key = e.target.value;
+                                setCustomFields(updated);
+                            }}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Enter value"
+                            value={field.value}
+                            onChange={(e) => {
+                                const updated = [...customFields];
+                                updated[index].value = e.target.value;
+                                setCustomFields(updated);
+                            }}
+                        />
+                        <button className="remove-btn" onClick={() => handleRemoveCustom(index)}>❌</button>
+                    </div>
+                ))}
+                <span className="add-link" onClick={handleAddCustom}>+ Add custom</span>
 
-                    <h3>Custom Fields</h3>
-                    {customFields.map((field, index) => (
-                        <div key={index} className="field-row">
-                            <input
-                                type="text"
-                                placeholder="Enter key name"
-                                value={field.key}
-                                onChange={(e) => {
-                                    const updated = [...customFields];
-                                    updated[index].key = e.target.value;
-                                    setCustomFields(updated);
-                                }}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Enter value"
-                                value={field.value}
-                                onChange={(e) => {
-                                    const updated = [...customFields];
-                                    updated[index].value = e.target.value;
-                                    setCustomFields(updated);
-                                }}
-                            />
-                            <button className="remove-btn" onClick={() => handleRemoveCustom(index)}>❌</button>
-                        </div>
-                    ))}
-                    <span className="add-link" onClick={handleAddCustom}>+ Add custom</span>
+                <button className="btn primary-btn" onClick={handleSaveMeasurements}>Save Measurements</button>
+            </div>
+        )
+    }
 
-                    <button className="btn primary-btn" onClick={handleSaveMeasurements}>Save Measurements</button>
+    {
+        lastPart && (
+            <div className="section">
+                <div className="form-groupp">
+                    <label>Silaicharge:</label>
+                    <input type="number" value={silaicharge} onChange={(e) => setSilaicharge(e.target.value)} />
                 </div>
-            )}
 
-            {lastPart && (
-                <div className="section">
-                    <div className="form-groupp">
-                        <label>Silaicharge:</label>
-                        <input type="number" value={silaicharge} onChange={(e) => setSilaicharge(e.target.value)} />
-                    </div>
-
-                    <div className="form-groupp">
-                        <label>Delivery Date:</label>
-                        <input type="date" value={deliveryDate} onChange={(e) => setDeliveryDate(e.target.value)} />
-                    </div>
-
-                    <div className="form-groupp">
-                        <label>Upload Image:</label>
-                        <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
-                    </div>
-
-                    <div className="btn-group">
-                        <button className="btn secondary-btn" onClick={() => saveItem("save")}>Save Item</button>
-                        <button className="btn secondary-btn" onClick={() => saveItem("add")}>+ Add more item</button>
-                    </div>
+                <div className="form-groupp">
+                    <label>Delivery Date:</label>
+                    <input type="date" value={deliveryDate} onChange={(e) => setDeliveryDate(e.target.value)} />
                 </div>
-            )}
-        </div>
+
+                <div className="form-groupp">
+                    <label>Upload Image:</label>
+                    <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
+                </div>
+
+                <div className="btn-group">
+                    <button className="btn secondary-btn" onClick={() => saveItem("save")}>Save Item</button>
+                    <button className="btn secondary-btn" onClick={() => saveItem("add")}>+ Add more item</button>
+                </div>
+            </div>
+        )
+    }
+        </div >
     );
 };
