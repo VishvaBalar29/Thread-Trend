@@ -18,7 +18,7 @@ export const AdminPanel = () => {
         <ul className="sidebar-menu">
           <li>
             <NavLink to="/admin" end onClick={closeSidebar}>
-              <i className="fas fa-user-shield"></i> Admin
+              <i className="fas fa-user-shield"></i> Dashboard
             </NavLink>
           </li>
           <li>

@@ -1,6 +1,9 @@
 import React from "react";
 import "../assets/css/Home.css"; 
-import homeMainImage from "../assets/images/home/home-main2.jpg";
+import home1 from "../assets/images/home/home1.webp";
+import home2 from "../assets/images/home/home2.webp";
+import home3 from "../assets/images/home/home3.jpeg";
+import home4 from "../assets/images/home/home4.avif";
 
 export const Home = () => {
     return (
@@ -16,7 +19,7 @@ export const Home = () => {
                 <h2>Services</h2>
                 <div className="services-grid">
                     <div className="service-card">
-                        <img src={homeMainImage} alt="Custom Tailoring" />
+                        <img src={home1} alt="Custom Tailoring" />
                         <h3>Custom Tailoring</h3>
                         <p>
                             We provide custom tailoring service so that you can choose all details you want, from buttons to pockets and lapels.
@@ -24,7 +27,7 @@ export const Home = () => {
                         <button className="service-btn">Enquire Now</button>
                     </div>
                     <div className="service-card">
-                        <img src="/images/altering.jpg" alt="Altering" />
+                        <img src={home2} alt="Altering" />
                         <h3>Altering</h3>
                         <p>
                             The perfect cut for your outfit is something we believe in. We offer best altering options to help you look classy.
@@ -32,18 +35,18 @@ export const Home = () => {
                         <button className="service-btn">Enquire Now</button>
                     </div>
                     <div className="service-card">
-                        <img src="/images/wedding.jpg" alt="Wedding Outfits" />
+                        <img src={home3} alt="Wedding Outfits" />
                         <h3>Wedding Outfit Tailoring</h3>
                         <p>
-                            We help you make your big day special by providing creative stitching designs that make you shine.
+                            We help you make your big day special by providing creative stitching designs that make you shine. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </p>
                         <button className="service-btn">Enquire Now</button>
                     </div>
                     <div className="service-card">
-                        <img src="/images/home-visit.jpg" alt="Home Visit" />
+                        <img src={home4} alt="Home Visit" />
                         <h3>Home Visit Tailor Services</h3>
                         <p>
-                            Our tailoring experts visit your place for measurements to match your busy schedule and convenience.
+                            Our tailoring experts visit your place for measurements to match your busy schedule and convenience. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </p>
                         <button className="service-btn">Enquire Now</button>
                     </div>

@@ -25,6 +25,8 @@ import { ViewKeys } from "./pages/Admin/VIewKeys";
 import { AddItem } from "./pages/Admin/AddItem";
 import { ViewSingleOrder } from "./pages/ViewSingleOrder";
 import { Measurements } from "./pages/Admin/Measurements";
+import { AdminMain } from "./pages/Admin/AdminMain";
+import { Footer } from "./components/Footer";
 
 
 const App = () => {
@@ -49,7 +51,7 @@ const App = () => {
 
           
           <Route path="/admin" element={<Admin />}>
-            <Route index element={<h1>Hello Admin Page</h1>} />
+            <Route path="" element={<AdminMain />} />
             <Route path="add-customer" element={<AddCustomer />} />
             <Route path="view-customers" element={<ViewCustomers />} />
             <Route path="add-design" element={<AddDesign />} />
@@ -61,6 +63,7 @@ const App = () => {
             <Route path="measurements" element={<Measurements />} />
           </Route>
         </Routes>
+        <Footer></Footer>
       </BrowserRouter>
     </>
   )

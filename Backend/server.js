@@ -9,6 +9,7 @@ const itemRouter = require("./routers/item-router");
 const measurementRouter = require("./routers/measurement-router");
 const defaultMeasurementRouter = require("./routers/default-measurement-router");
 const itemMeasurementRouter = require("./routers/item-measurement-router");
+const adminRouter = require("./routers/admin-router");
 const connectDb = require("./utils/db");
 const errorMiddleware = require("./middlewares/error-middleware")
 const cors = require('cors');
@@ -41,6 +42,7 @@ app.use("/item", itemRouter);
 app.use("/measurement", measurementRouter);
 app.use("/default-measurement", defaultMeasurementRouter);
 app.use("/item-measurement", itemMeasurementRouter);
+app.use("/admin", adminRouter);
 
 
 // for error-middleware
