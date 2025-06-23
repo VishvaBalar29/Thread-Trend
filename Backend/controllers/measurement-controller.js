@@ -70,6 +70,14 @@ const deleteMeasurement = async (req, res) => {
 
         const isInItemMeasurement = await ItemMeasurement.findOne({ key_id: id });
 
+        if(isInCategoryDefault){
+            console.log("true-c");
+            
+        }
+        if(isInItemMeasurement){
+            console.log(isInItemMeasurement);
+            
+        }
         if (isInCategoryDefault || isInItemMeasurement) {
             return sendResponse(res, 400, {}, `Cannot delete: This measurement is being used in category or item measurements. Please remove those first.`);
         }

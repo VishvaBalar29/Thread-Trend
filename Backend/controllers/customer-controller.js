@@ -1,5 +1,6 @@
 const { application } = require("express");
 const Customer = require("../models/customer-model");
+const Order = require("../models/order-model");
 const random = require('random');
 const sendEmail = require("../services/mail-service");
 const jwt = require("jsonwebtoken");
@@ -72,7 +73,10 @@ const login = async (req, res) => {
 
 const getAllCustomer = async (req, res) => {
     try {
-        const customers = await Customer.find({}, { password: 0, is_admin: 0, __v: 0 });
+        const customers = await Customer.find(
+            { is_admin: false },
+            { password: 0, is_admin: 0, __v: 0 }
+        );
         if (customers.length === 0) {
             return sendResponse(res, 200, {}, "Customers not found");
         }
@@ -94,7 +98,7 @@ const getCustomerById = async (req, res) => {
             return res.status(200).json({ msg: "Customer not found" });
         }
         return res.status(200).json({ msg: customer });
-    } catch (error) {
+    } catch (e) {
         return res.status(400).json({ msg: `getCustomerById Controller error ${e}` });
     }
 }
@@ -109,7 +113,12 @@ const deleteCustomer = async (req, res) => {
         if (!customerExist) {
             return sendResponse(res, 400, {}, "given customer ID is not found");
         }
-        await Customer.deleteOne({ _id: id });
+        const hasOrders = await Order.exists({ customer_id: id });
+
+        if (hasOrders) {
+            return sendResponse(res, 400, {}, "Customer cannot be deleted because they have existing orders");
+        }
+        // await Customer.deleteOne({ _id: id });
         return sendResponse(res, 200, {}, "Deleted Successfully");
     } catch (e) {
         return sendResponse(res, 400, {}, `deleteCustomerById Controller error ${e}`);

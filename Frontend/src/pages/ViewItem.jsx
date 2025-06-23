@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../assets/css/ViewItem.css";
 import { toast } from "react-toastify";
+import { useAuth } from "../store/auth";
 
 export const ViewItem = () => {
     const { itemId } = useParams();
+
+    const { isAdmin } = useAuth();
     const [item, setItem] = useState(null);
     const [measurements, setMeasurements] = useState([]);
 
@@ -178,11 +181,11 @@ export const ViewItem = () => {
                 <div className="item-details-row">
                     <div className="item-details">
                         <h2>{item.item_name}</h2>
-                        <p><strong>Category:</strong> {item.category_id.name}</p>
-                        <p><strong>Silai Charges:</strong> ₹{item.silaiCharges}</p>
-                        <p><strong>Order Status:</strong> {item.order_id.status}</p>
-                        <p><strong>Order Date:</strong> {new Date(item.order_id.order_date).toLocaleDateString()}</p>
-                        <p><strong>Delivery Date:</strong> {new Date(item.order_id.delivery_date).toLocaleDateString()}</p>
+                        <p><strong>Category &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </strong> {item.category_id.name}</p>
+                        <p><strong>Silai Charges &nbsp;&nbsp;: </strong> ₹ {item.silaiCharges}</p>
+                        <p><strong>Order Status &nbsp; &nbsp;: </strong> {item.order_id.status}</p>
+                        <p><strong>Order Date &nbsp; &nbsp;  &nbsp; &nbsp;: </strong> {new Date(item.order_id.order_date).toLocaleDateString()}</p>
+                        <p><strong>Delivery Date &nbsp; : </strong> {new Date(item.order_id.delivery_date).toLocaleDateString()}</p>
                     </div>
 
                     {item.sample_image && (
@@ -208,9 +211,17 @@ export const ViewItem = () => {
             <div className="measurement-section">
                 <div className="measurement-header">
                     <h3>Measurements</h3>
-                    <button className="add-order-btn" onClick={() => setShowAddModal(true)}>
-                        + Add Measurement
-                    </button>
+
+                    {
+                        isAdmin ? (
+                            <button className="add-order-btn" onClick={() => setShowAddModal(true)}>
+                                + Add Measurement
+                            </button>
+                        )
+                            :
+                            <></>
+                    }
+
                 </div>
 
                 {measurements.length > 0 ? (
@@ -218,10 +229,21 @@ export const ViewItem = () => {
                         {measurements.map((m) => (
                             <li key={m._id} className="measurement-item">
                                 <span className="measurement-key">{m.key_id.key_name}</span>
+
                                 <div className="measurement-right">
                                     <span className="measurement-value">{m.value} cm</span>
-                                    <button className="update-filled-btn" onClick={() => openUpdateModal(m)}>Update</button>
-                                    <button className="delete-filled-btn" onClick={() => handleDeleteMeasurement(m._id)}>Delete</button>
+
+                                    {
+                                        isAdmin ?
+                                            (
+                                                <>
+                                                    <button className="update-filled-btn" onClick={() => openUpdateModal(m)}>Update</button>
+                                                    <button className="delete-filled-btn" onClick={() => handleDeleteMeasurement(m._id)}>Delete</button></>
+                                            )
+                                            :
+                                            <></>
+                                    }
+
                                 </div>
                             </li>
                         ))}

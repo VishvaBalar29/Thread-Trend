@@ -18,7 +18,9 @@ export const Navbar = () => {
             <ul className="nav-links">
                 <li><NavLink to="/">Home</NavLink></li>
                 <li><NavLink to="/design">Designs</NavLink></li>
+                <li><NavLink to="/design">Blog</NavLink></li>
                 <li><NavLink to="/about">About Us</NavLink></li>
+                <li><NavLink to="/about">Contact</NavLink></li>
 
                 {
                     isAdmin 
@@ -32,7 +34,6 @@ export const Navbar = () => {
                     isLoggedIn
                     ?
                     (<>
-                    <li><NavLink to="/logout">Logout</NavLink></li>
                      <li><NavLink to="/profile">Profile</NavLink></li></>
                     )
                     :

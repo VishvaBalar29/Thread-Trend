@@ -247,7 +247,6 @@ export const AddItem = () => {
                     setIsItemCreated(false);
                     setLastPart(false);
                     setDMeasurementShown(false);
-                    setCategories([]);
                     setCustomFields([]);
                     setExtraFields([]);
                     setDefaultMeasurements([]);
@@ -362,7 +361,7 @@ export const AddItem = () => {
                     </div>
                 ))}
                 <span className="add-link" onClick={handleAddCustom}>+ Add custom</span>
-
+                <br /><br />
                 <button className="btn primary-btn" onClick={handleSaveMeasurements}>Save Measurements</button>
             </div>
         )

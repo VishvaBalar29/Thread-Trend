@@ -13,12 +13,10 @@
   z-index: 1000;
 }
 
-/* Sidebar hidden by default on small screens */
 .sidebar.open {
   transform: translateX(0);
 }
 
-/* Initially hidden on mobile */
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
